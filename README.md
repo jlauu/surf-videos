@@ -1,3 +1,13 @@
+# TODO
+
+1. Hello World!
+2. Scaffold
+  * Models
+  * API w/ mocked response
+3. Basic Home/Player pages
+4. Search + Query
+5. Infinite Scroll/Pagination
+
 # Browse/Search Surf Videos
 
 you can use whatever frameworks you’d like. we use React here at drift and have found create-react-app to be a great way to get started. 
