@@ -9,7 +9,7 @@ export default ({ title, description, thumbnailUrl, id }) => (
           pathname: '/watch',
           query: { id }
         }}>
-        { title }
+        <a>{ title }</a>
       </List.Header>
       <List.Description>{ description }</List.Description>
     </List.Content>
