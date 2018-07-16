@@ -10,7 +10,7 @@ const HomePage = ({ videos }) => (
     <Header>Surf Videos!</Header>
     <List>
       {videos.map((v, i) => (
-        <VideoCard key={v.id.videoId} {...v.snippet}>
+        <VideoCard key={v.id.videoId} id={v.id.videoId} {...v.snippet}>
         </VideoCard>
       ))}
     </List>
