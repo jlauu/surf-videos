@@ -2,7 +2,7 @@ import React from 'react';
 import Page from '../layout/main';
 import VideoCard from '../components/card';
 import SearchBar from '../components/search';
-import { Header, List } from 'semantic-ui-react';
+import { Header, List, Loader, Visibility } from 'semantic-ui-react';
 import { Youtube } from '../lib/api';
 
 class HomePage extends React.Component {
@@ -11,22 +11,43 @@ class HomePage extends React.Component {
     this.state = {
       videos: [],
       loading: false,
+      token: null,
+      query: null,
+      category: null,
     };
   }
 
   handleSubmit(query, category) {
     this.setState(prev => ({...prev, loading: true}));
     Youtube.videos.search(query, category)
-      .then(videos => {
+      .then(({ token, videos}) => {
         this.setState(prev => ({
+          category,
+          query,
+          token,
+          videos,
           loading: false,
-          videos: videos,
+        }));
+      });
+  }
+
+  handleScroll = () => {
+    const { query, category, token, loading } = this.state;
+    if (loading) return;
+    this.setState(prev => ({ ...prev, loading: true }));
+    Youtube.videos.search(query, category, token)
+      .then(({ token, videos }) => {
+        this.setState(prev => ({
+          ...prev,
+          token,
+          videos: [...prev.videos, ...videos],
+          loading: false,
         }));
       });
   }
 
   render() {
-    const { videos, loading } = this.state;
+    const { videos, loading, token } = this.state;
     return (
       <Page>
         <Header>Surf Videos!</Header>
@@ -34,12 +55,16 @@ class HomePage extends React.Component {
           loading={loading}
           onSubmit={this.handleSubmit.bind(this)}
         />
-        { !loading && <List>
+        { videos && <List>
           {videos.map(video => (
             <VideoCard key={video.id} {...video}>
             </VideoCard>
           ))}
         </List>}
+      { token &&
+          <Visibility offset={[0,25]} onOnScreen={this.handleScroll} once={false}>
+            <Loader active inline='centered' />
+          </Visibility>}
       </Page>
     );
   }

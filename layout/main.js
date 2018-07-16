@@ -7,9 +7,17 @@ export default ({ children }) => (
       <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.3.1/semantic.min.css"></link>
       <link rel="stylesheet" href="/_next/static/style.css" />
     </Head>
-    <Container>
-      { children }
-    </Container>
+    <div className="wrapper">
+      <Container>
+        { children }
+      </Container>
+    </div>
+    <style jsx>{`
+      .wrapper {
+        padding-top: 5vh;
+        padding-bottom: 5vh;
+      }
+    `}</style>
   </div>
 );
 
