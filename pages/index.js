@@ -18,27 +18,26 @@ class HomePage extends React.Component {
   }
 
   handleSubmit(query, category) {
-    this.setState(prev => ({...prev, loading: true}));
+    this.setState({ loading: true });
     Youtube.videos.search(query, category)
-      .then(({ token, videos}) => {
-        this.setState(prev => ({
+      .then(({ token, videos }) => {
+        this.setState({
           category,
           query,
           token,
           videos,
           loading: false,
-        }));
+        });
       });
   }
 
   handleScroll = () => {
     const { query, category, token, loading } = this.state;
     if (loading) return;
-    this.setState(prev => ({ ...prev, loading: true }));
+    this.setState({ loading: true });
     Youtube.videos.search(query, category, token)
       .then(({ token, videos }) => {
         this.setState(prev => ({
-          ...prev,
           token,
           videos: [...prev.videos, ...videos],
           loading: false,
@@ -62,7 +61,9 @@ class HomePage extends React.Component {
           ))}
         </List>}
       { token &&
-          <Visibility offset={[0,25]} onOnScreen={this.handleScroll} once={false}>
+          <Visibility offset={[0,25]}
+            onOnScreen={loading ? undefined : this.handleScroll}
+            once={false}>
             <Loader active inline='centered' />
           </Visibility>}
       </Page>
