@@ -1,5 +1,7 @@
+import 'semantic-ui-css/components/container.css';
 import 'semantic-ui-css/components/embed.css';
 import 'semantic-ui-css/components/header.css';
+import 'semantic-ui-css/components/image.css';
 import 'semantic-ui-css/components/list.css';
 import 'semantic-ui-css/themes/default/assets/fonts/icons.eot';
 import 'semantic-ui-css/themes/default/assets/fonts/icons.woff';
