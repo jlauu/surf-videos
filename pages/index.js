@@ -47,12 +47,14 @@ class HomePage extends React.Component {
 
   render() {
     const { videos, loading, token } = this.state;
+    const { categories } = this.props;
     return (
       <Page>
         <Header>Surf Videos!</Header>
         <SearchBar
           loading={loading}
           onSubmit={this.handleSubmit.bind(this)}
+          categories={categories}
         />
         { videos && <List>
           {videos.map(video => (
@@ -69,6 +71,16 @@ class HomePage extends React.Component {
       </Page>
     );
   }
+}
+
+HomePage.getInitialProps = async function() {
+  const categories = await Youtube.categories.get()
+    .then(items => items.map(item => ({
+        key: item.id,
+        text: item.title,
+        value: item.id,
+    })));
+  return { categories };
 }
 
 export default HomePage;

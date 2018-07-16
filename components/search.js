@@ -1,5 +1,6 @@
 import React from 'react';
-import { Button, Form, Select } from 'semantic-ui-react';
+import { Button, Dropdown, Form, Select } from 'semantic-ui-react';
+import { Youtube } from '../lib/api';
 
 const options = [
   { key: 'all', text: 'All Videos', value: 'all' },
@@ -7,7 +8,7 @@ const options = [
 ];
 
 class SearchBar extends React.Component {
-  state = { query: '' }
+  state = { query: '', mode: 'all' }
 
   handleChange = (e, { name, value }) => {
     this.setState({ [name]: value });
@@ -18,8 +19,15 @@ class SearchBar extends React.Component {
     this.props.onSubmit(query, category);
   }
 
+  get isCategory() {
+    return this.state.mode === 'category';
+  }
+
   render() {
-    const { onSubmit, loading } = this.props;
+    const {
+       props: { categories, onSubmit, loading },
+       isCategory,
+    } = this;
     return (
       <Form onSubmit={this.handleSubmit}>
          <Form.Input
@@ -30,9 +38,21 @@ class SearchBar extends React.Component {
             disabled={loading}
             action>
             <input/>
-            <Select compact options={options} defaultValue='all' />
+            <Select compact options={options} defaultValue='all'
+              name="mode"
+              onChange={this.handleChange}
+            />
             <Button type="Submit">Search</Button>
          </Form.Input>
+        { isCategory &&
+          <Dropdown fluid search selection
+            name="category"
+            onChange={this.handleChange}
+            placeholder="Select Category"
+            disabled={loading}
+            options={categories}
+          />
+        }
       </Form>
     );
   }
