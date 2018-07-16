@@ -1,8 +1,8 @@
 import Link from 'next/link';
 import { List, Image } from 'semantic-ui-react';
-export default ({ title, description, thumbnails, id }) => (
+export default ({ title, description, thumbnailUrl, id }) => (
   <List.Item>
-    <Image src={ thumbnails.default.url }></Image>
+    <Image src={ thumbnailUrl }></Image>
     <List.Content>
       <List.Header as={Link}
         href={{
