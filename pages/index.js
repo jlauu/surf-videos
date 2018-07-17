@@ -1,23 +1,23 @@
 import React from 'react';
+import { Header, List, Loader, Visibility } from 'semantic-ui-react';
 import Page from '../layout/main';
 import VideoCard from '../components/card';
 import SearchBar from '../components/search';
-import { Header, List, Loader, Visibility } from 'semantic-ui-react';
 import { Youtube } from '../lib/api';
 
 class HomePage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      videos: [],
-      loading: false,
-      token: null,
-      query: null,
       category: null,
+      loading: false,
+      query: null,
+      token: null,
+      videos: [],
     };
   }
 
-  handleSubmit(query, category) {
+  handleSubmit = (query, category) => {
     this.setState({ loading: true });
     Youtube.videos.search(query, category)
       .then(({ token, videos }) => {
@@ -38,6 +38,7 @@ class HomePage extends React.Component {
     Youtube.videos.search(query, category, token)
       .then(({ token, videos }) => {
         this.setState(prev => ({
+          ...prev,
           token,
           videos: [...prev.videos, ...videos],
           loading: false,
@@ -46,14 +47,15 @@ class HomePage extends React.Component {
   }
 
   render() {
-    const { videos, loading, token } = this.state;
-    const { categories } = this.props;
+    const { handleSubmit, handleScroll, state, props } = this;
+    const { videos, loading, token } = state;
+    const { categories } = props;
     return (
       <Page>
         <Header>Surf Videos!</Header>
         <SearchBar
           loading={loading}
-          onSubmit={this.handleSubmit.bind(this)}
+          onSubmit={handleSubmit}
           categories={categories}
         />
         { videos && <List>
@@ -64,7 +66,7 @@ class HomePage extends React.Component {
         </List>}
       { token &&
           <Visibility offset={[0,25]}
-            onOnScreen={loading ? undefined : this.handleScroll}
+            onOnScreen={loading ? undefined : handleScroll}
             once={false}>
             <Loader active inline='centered' />
           </Visibility>}
@@ -81,6 +83,6 @@ HomePage.getInitialProps = async function() {
         value: item.id,
     })));
   return { categories };
-}
+};
 
 export default HomePage;
