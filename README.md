@@ -1,3 +1,6 @@
+# Usage
+Run locally: `npm run dev` or `yarn run dev`
+
 # TODO
 
 1. Hello World!
