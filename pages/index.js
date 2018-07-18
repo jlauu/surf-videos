@@ -1,6 +1,7 @@
 import React from 'react';
-import { Header, List, Loader, Visibility } from 'semantic-ui-react';
+import { Header, Loader, Visibility } from 'semantic-ui-react';
 import Page from '../layout/main';
+import VideoResults from '../components/videos';
 import VideoCard from '../components/card';
 import SearchBar from '../components/search';
 import { Youtube } from '../lib/api';
@@ -19,8 +20,11 @@ class HomePage extends React.Component {
 
   handleSubmit = (query, category) => {
     this.setState({ loading: true });
-    Youtube.videos.search(query, category)
-      .then(({ token, videos }) => {
+    console.log('hanldeSubmit')
+    const prom = Youtube.videos.search(query, category);
+    console.log(prom);
+      prom.then(({ token, videos }) => {
+        console.log('aaaaaa', token, videos);
         this.setState({
           category,
           query,
@@ -58,12 +62,7 @@ class HomePage extends React.Component {
           onSubmit={handleSubmit}
           categories={categories}
         />
-        { videos && <List>
-          {videos.map(video => (
-            <VideoCard key={video.id} {...video}>
-            </VideoCard>
-          ))}
-        </List>}
+        { videos && <VideoResults videos={videos}></VideoResults> }
       { token &&
           <Visibility offset={[0,25]}
             onOnScreen={loading ? undefined : handleScroll}
