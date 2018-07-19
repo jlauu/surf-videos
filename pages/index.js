@@ -20,11 +20,8 @@ class HomePage extends React.Component {
 
   handleSubmit = (query, category) => {
     this.setState({ loading: true });
-    console.log('hanldeSubmit')
-    const prom = Youtube.videos.search(query, category);
-    console.log(prom);
-      prom.then(({ token, videos }) => {
-        console.log('aaaaaa', token, videos);
+    Youtube.videos.search(query, category)
+      .then(({ token, videos }) => {
         this.setState({
           category,
           query,
